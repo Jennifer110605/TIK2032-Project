@@ -2,57 +2,62 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Homepage</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Memperbaiki ukuran gambar profil */
-        .profile-image {
-            width: 200px !important;
-            height: 200px !important;
-            object-fit: cover;
-            border-radius: 50%;
-            margin: 20px auto !important;
-            display: block;
-            border: 5px solid #fff;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            max-width: 50vw; /* Batasi lebar maksimal ke 50% lebar viewport */
-        }
-        
-        /* Styling khusus untuk container profil */
-        .profile-container {
-            max-width: 800px;
-            margin: 0 auto;
+        /* Style tambahan untuk animasi yang aman */
+        .typing-container {
+            min-height: 60px;
+            margin-bottom: 20px;
+            position: relative;
             text-align: center;
         }
         
-        /* Style untuk konten intro */
-        .intro-text {
-            margin: 15px auto;
-            max-width: 600px;
-            line-height: 1.6;
+        .welcome-text {
+            display: inline-block;
+            margin: 0;
+            font-size: 2rem;
+            color: #333;
+            text-align: center;
         }
         
-        /* Mobile styles */
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: block;
+            border: 3px solid #fff;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .intro-text {
+            margin: 15px 0;
+            text-align: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .profile-container {
+            text-align: center;
+            padding: 0 15px;
+        }
+        
         @media (max-width: 768px) {
+            .welcome-text {
+                font-size: 1.3rem;
+            }
+            
+            .typing-container {
+                min-height: 40px;
+            }
+            
             .profile-image {
-                width: 120px !important;
-                height: 120px !important;
-            }
-            
-            h1.welcome-heading {
-                font-size: 1.4rem !important;
-                padding: 0 10px;
-            }
-            
-            .university-info {
-                font-size: 0.9rem;
-                padding: 0 15px;
-            }
-            
-            .intro-text {
-                font-size: 1rem;
-                padding: 0 15px;
+                width: 120px;
+                height: 120px;
             }
         }
     </style>
@@ -70,12 +75,15 @@
     <div class="container">
         <div class="home-content">
             <div class="profile-container">
-                <h1 class="welcome-heading">Welcome to Personal Homepage Jennifer Manoppo</h1>
+                <!-- Container khusus untuk animasi typing -->
+                <div class="typing-container">
+                    <h1 id="typing-text" class="welcome-text"></h1>
+                </div>
+                
                 <p class="university-info">Universitas Sam Ratulangi, Fakultas Teknik, Jurusan Elektro, Program Studi Teknik Informatika.</p>
                 
-                <!-- Perbaikan pada tag gambar dengan ukuran yang diperketat -->
-                <img src="img/photo11.jpg" alt="Profile Photo" class="profile-image" loading="lazy" width="200" height="200">
- 
+                <img src="img/photo11.jpg" alt="Profile Photo" class="profile-image" loading="lazy">
+                
                 <p class="intro-text">Apabila mner berkenan tolong berikan saya nilai A, Terimaksih banyak Tuhan Memberkati.</p>
                 
                 <a href="contact.html" class="cta-button">Hubungi Saya</a>
@@ -86,7 +94,43 @@
     <footer class="footer">
         <p>&copy; <b>2025 Jennifer Manoppo</b></p>
     </footer>
-
-    <script src="scripts.js"></script>
+    
+    <!-- Custom typing script yang aman untuk mobile -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Text yang akan ditampilkan
+            const text = "Welcome to Personal Homepage Jennifer Manoppo";
+            const typingElement = document.getElementById('typing-text');
+            
+            // Set ukuran font berbeda berdasarkan perangkat
+            const isMobile = window.innerWidth <= 768;
+            
+            // Mulai dengan teks kosong
+            typingElement.textContent = "";
+            
+            // Variabel untuk animasi
+            let i = 0;
+            let speed = isMobile ? 40 : 50; // Lebih cepat di mobile
+            
+            // Fungsi animasi typing yang aman
+            function safeTypeWriter() {
+                if (i < text.length) {
+                    typingElement.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(safeTypeWriter, speed);
+                }
+            }
+            
+            // Delay sebelum memulai animasi
+            setTimeout(safeTypeWriter, 500);
+            
+            // Jika ada masalah, tampilkan teks secara lengkap sebagai fallback
+            setTimeout(function() {
+                if (typingElement.textContent.length < text.length) {
+                    typingElement.textContent = text;
+                }
+            }, text.length * speed + 1000);
+        });
+    </script>
 </body>
 </html>
