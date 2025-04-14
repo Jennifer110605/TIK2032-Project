@@ -2,38 +2,58 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#333333">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Personal Homepage</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Style tambahan untuk mengatur gambar profil */
+        /* Memperbaiki ukuran gambar profil */
         .profile-image {
-            width: 200px;
-            height: 200px;
+            width: 200px !important;
+            height: 200px !important;
             object-fit: cover;
             border-radius: 50%;
-            margin: 20px auto;
+            margin: 20px auto !important;
             display: block;
             border: 5px solid #fff;
             box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            max-width: 50vw; /* Batasi lebar maksimal ke 50% lebar viewport */
         }
         
-        /* Container untuk konten profil */
+        /* Styling khusus untuk container profil */
         .profile-container {
-            text-align: center;
             max-width: 800px;
             margin: 0 auto;
+            text-align: center;
         }
         
-        /* Atur paragraf intro */
+        /* Style untuk konten intro */
         .intro-text {
-            margin: 20px auto;
-            line-height: 1.6;
-            font-size: 1.1rem;
+            margin: 15px auto;
             max-width: 600px;
+            line-height: 1.6;
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .profile-image {
+                width: 120px !important;
+                height: 120px !important;
+            }
+            
+            h1.welcome-heading {
+                font-size: 1.4rem !important;
+                padding: 0 10px;
+            }
+            
+            .university-info {
+                font-size: 0.9rem;
+                padding: 0 15px;
+            }
+            
+            .intro-text {
+                font-size: 1rem;
+                padding: 0 15px;
+            }
         }
     </style>
 </head>
@@ -53,10 +73,10 @@
                 <h1 class="welcome-heading">Selamat Datang di Personal Homepage Jennifer Manoppo</h1>
                 <p class="university-info">Universitas Sam Ratulangi, Fakultas Teknik, Jurusan Elektro, Program Studi Teknik Informatika.</p>
                 
-                <!-- Gambar profil dengan class dan ukuran yang diatur -->
-                <img src="img/photo11.jpg" alt="Profile Photo" class="profile-image" loading="lazy">
-                
-                <p class="intro-text">Apabila mner berkenan tolong berikan saya nilai A, Terimaksih banyak Tuhan Memberkati selalu.</p>
+                <!-- Perbaikan pada tag gambar dengan ukuran yang diperketat -->
+                <img src="img/photo11.jpg" alt="Profile Photo" class="profile-image" loading="lazy" width="200" height="200">
+ 
+                <p class="intro-text">Apabila mner berkenan tolong berikan saya nilai A, Terimaksih banyak Tuhan Memberkati.</p>
                 
                 <a href="contact.html" class="cta-button">Hubungi Saya</a>
             </div>
