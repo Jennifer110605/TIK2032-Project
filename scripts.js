@@ -513,3 +513,61 @@ if('ontouchstart' in window) {
         // Biarkan browser menangani semua touch event secara default
     }, { passive: true });
 }
+// Tambahkan fungsi ini ke bagian bawah scripts.js untuk memperbaiki animasi typing di mobile
+
+// Fungsi perbaikan animasi typing pada perangkat mobile
+function fixMobileTypingAnimation() {
+    // Cek apakah ini halaman home
+    const welcomeHeading = document.querySelector('.welcome-heading');
+    if (!welcomeHeading) return;
+    
+    // Cek apakah tampilan mobile
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        // Override fungsi typing yang mungkin sudah ada
+        // Dapatkan teks asli
+        const originalText = 'Selamat Datang di Personal Homepage Jennifer Manoppo';
+        welcomeHeading.textContent = '';
+        
+        // Fungsi typing yang lebih cepat dan aman untuk mobile
+        let i = 0;
+        function mobileTypeWriter() {
+            if (i < originalText.length) {
+                welcomeHeading.textContent += originalText.charAt(i);
+                i++;
+                // Lebih cepat di mobile (20ms vs 50ms di desktop)
+                setTimeout(mobileTypeWriter, 20);
+            }
+        }
+        
+        // Mulai animasi typing dengan sedikit delay
+        setTimeout(() => {
+            mobileTypeWriter();
+        }, 500);
+    }
+}
+
+// Tambahkan ke event DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Panggil fungsi lain yang sudah ada...
+    
+    // Tambahkan perbaikan animasi typing untuk mobile
+    fixMobileTypingAnimation();
+});
+
+// Juga tangani event resize untuk kasus rotasi layar
+window.addEventListener('resize', function() {
+    // Cek jika ukuran layar berubah dari desktop ke mobile atau sebaliknya
+    const wasMobile = window.wasMobile;
+    const isMobile = window.innerWidth <= 768;
+    window.wasMobile = isMobile;
+    
+    // Jika berubah dari desktop ke mobile atau sebaliknya, refresh halaman
+    if (wasMobile !== undefined && wasMobile !== isMobile) {
+        // Hanya refresh jika ini adalah halaman home
+        if (document.querySelector('.welcome-heading')) {
+            location.reload();
+        }
+    }
+});
