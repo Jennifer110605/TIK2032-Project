@@ -6,20 +6,12 @@
     <title>Personal Homepage</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Style tambahan untuk animasi yang aman */
-        .typing-container {
-            min-height: 60px;
-            margin-bottom: 20px;
-            position: relative;
-            text-align: center;
-        }
-        
-        .welcome-text {
-            display: inline-block;
-            margin: 0;
+        /* Style untuk teks welcome statis */
+        .welcome-heading {
             font-size: 2rem;
             color: #333;
             text-align: center;
+            margin-bottom: 20px;
         }
         
         .profile-image {
@@ -45,6 +37,17 @@
             text-align: center;
             padding: 0 15px;
         }
+        
+        @media (max-width: 768px) {
+            .welcome-heading {
+                font-size: 1.3rem;
+            }
+            
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -60,10 +63,8 @@
     <div class="container">
         <div class="home-content">
             <div class="profile-container">
-                <!-- Container khusus untuk animasi typing -->
-                <div class="typing-container">
-                    <h1 id="typing-text" class="welcome-text"></h1>
-                </div>
+                <!-- Teks welcome statis yang benar -->
+                <h1 class="welcome-heading">Welcome to Jennifer Manoppo's Personal Blog</h1>
                 
                 <p class="university-info">Universitas Sam Ratulangi, Fakultas Teknik, Jurusan Elektro, Program Studi Teknik Informatika.</p>
                 
@@ -80,43 +81,29 @@
         <p>&copy; <b>2025 Jennifer Manoppo</b></p>
     </footer>
     
-    <!-- Custom typing script yang aman untuk mobile -->
     <script>
-        localStorage.removeItem('welcomeText'); // Jika Anda menggunakan localStorage
         document.addEventListener('DOMContentLoaded', function() {
-    // Text yang akan ditampilkan (perbaiki typo "Blogog" menjadi "Blog")
-    const text = "Welcome to Jennifer Manoppo's Personal Blog";
-    const typingElement = document.getElementById('typing-text');
-    
-    // Set ukuran font berbeda berdasarkan perangkat
-    const isMobile = window.innerWidth <= 768;
-    
-    // Mulai dengan teks kosong
-    typingElement.textContent = "";
-    
-    // Variabel untuk animasi
-    let i = 0;
-    let speed = isMobile ? 40 : 50; // Lebih cepat di mobile
-    
-    // Fungsi animasi typing yang aman
-    function safeTypeWriter() {
-        if (i < text.length) {
-            typingElement.textContent += text.charAt(i);
-            i++;
-            setTimeout(safeTypeWriter, speed);
-        }
-    }
-    
-    // Delay sebelum memulai animasi
-    setTimeout(safeTypeWriter, 500);
-    
-    // Jika ada masalah, tampilkan teks secara lengkap sebagai fallback
-    setTimeout(function() {
-        if (typingElement.textContent.length < text.length) {
-            typingElement.textContent = text;
-        }
-    }, text.length * speed + 1000);
-});
+            // Set active link
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Memastikan welcome text benar dengan scripting
+            const welcomeHeading = document.querySelector('.welcome-heading');
+            if (welcomeHeading) {
+                // Pastikan teks selalu benar
+                const correctText = "Welcome to Jennifer Manoppo's Personal Blog";
+                const currentText = welcomeHeading.textContent;
+                
+                if (currentText.includes("Blogg") || currentText.includes("Blogog")) {
+                    console.log("Memperbaiki teks yang salah:", currentText);
+                    welcomeHeading.textContent = correctText;
+                }
+            }
+        });
     </script>
 </body>
 </html>
