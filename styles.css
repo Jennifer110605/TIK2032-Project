@@ -584,3 +584,38 @@ textarea.form-control {
         font-size: 16px; /* Mencegah zoom otomatis di iOS */
     }
 }
+/* Tambahkan kode berikut di bagian akhir file styles.css Anda */
+
+/* Pastikan navigasi tetap horizontal pada mobile */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 5px;
+    }
+    
+    .nav-links {
+        display: flex;
+        flex-direction: row !important; /* Paksa menjadi baris horizontal */
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .nav-links a {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        text-align: center;
+        margin: 0;
+    }
+}
+
+/* Untuk perangkat yang sangat kecil, sesuaikan ukuran dan padding */
+@media (max-width: 360px) {
+    .nav-links {
+        gap: 5px;
+    }
+    
+    .nav-links a {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+    }
+}
