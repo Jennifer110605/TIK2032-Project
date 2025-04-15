@@ -83,39 +83,39 @@
     <!-- Custom typing script yang aman untuk mobile -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Text yang akan ditampilkan (sudah diganti sesuai permintaan)
-            const text = "Welcome to Jennifer Manoppo's Personal Blog";
-            const typingElement = document.getElementById('typing-text');
-            
-            // Set ukuran font berbeda berdasarkan perangkat
-            const isMobile = window.innerWidth <= 768;
-            
-            // Mulai dengan teks kosong
-            typingElement.textContent = "";
-            
-            // Variabel untuk animasi
-            let i = 0;
-            let speed = isMobile ? 40 : 50; // Lebih cepat di mobile
-            
-            // Fungsi animasi typing yang aman
-            function safeTypeWriter() {
-                if (i < text.length) {
-                    typingElement.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(safeTypeWriter, speed);
-                }
-            }
-            
-            // Delay sebelum memulai animasi
-            setTimeout(safeTypeWriter, 500);
-            
-            // Jika ada masalah, tampilkan teks secara lengkap sebagai fallback
-            setTimeout(function() {
-                if (typingElement.textContent.length < text.length) {
-                    typingElement.textContent = text;
-                }
-            }, text.length * speed + 1000);
-        });
+    // Text yang akan ditampilkan (perbaiki typo "Blogog" menjadi "Blog")
+    const text = "Welcome to Jennifer Manoppo's Personal Blog";
+    const typingElement = document.getElementById('typing-text');
+    
+    // Set ukuran font berbeda berdasarkan perangkat
+    const isMobile = window.innerWidth <= 768;
+    
+    // Mulai dengan teks kosong
+    typingElement.textContent = "";
+    
+    // Variabel untuk animasi
+    let i = 0;
+    let speed = isMobile ? 40 : 50; // Lebih cepat di mobile
+    
+    // Fungsi animasi typing yang aman
+    function safeTypeWriter() {
+        if (i < text.length) {
+            typingElement.textContent += text.charAt(i);
+            i++;
+            setTimeout(safeTypeWriter, speed);
+        }
+    }
+    
+    // Delay sebelum memulai animasi
+    setTimeout(safeTypeWriter, 500);
+    
+    // Jika ada masalah, tampilkan teks secara lengkap sebagai fallback
+    setTimeout(function() {
+        if (typingElement.textContent.length < text.length) {
+            typingElement.textContent = text;
+        }
+    }, text.length * speed + 1000);
+});
     </script>
 </body>
 </html>
