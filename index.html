@@ -46,6 +46,7 @@
             padding: 0 15px;
         }
         
+        /* Pastikan navigasi tetap horizontal pada mobile */
         @media (max-width: 768px) {
             .welcome-text {
                 font-size: 1.2rem; /* Sedikit lebih kecil karena teks lebih panjang */
@@ -58,6 +59,37 @@
             .profile-image {
                 width: 120px;
                 height: 120px;
+            }
+            
+            .navbar {
+                padding: 10px 5px;
+            }
+            
+            .nav-links {
+                display: flex;
+                flex-direction: row !important; /* Paksa menjadi baris horizontal */
+                justify-content: center;
+                gap: 10px;
+                width: 100%;
+            }
+            
+            .nav-links a {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+                text-align: center;
+                margin: 0;
+            }
+        }
+        
+        /* Untuk perangkat yang sangat kecil, sesuaikan ukuran dan padding */
+        @media (max-width: 360px) {
+            .nav-links {
+                gap: 5px;
+            }
+            
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 6px 8px;
             }
         }
     </style>
