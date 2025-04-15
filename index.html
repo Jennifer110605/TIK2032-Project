@@ -6,12 +6,20 @@
     <title>Personal Homepage</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Style untuk teks welcome statis */
-        .welcome-heading {
+        /* Style tambahan untuk animasi yang aman */
+        .typing-container {
+            min-height: 60px;
+            margin-bottom: 20px;
+            position: relative;
+            text-align: center;
+        }
+        
+        .welcome-text {
+            display: inline-block;
+            margin: 0;
             font-size: 2rem;
             color: #333;
             text-align: center;
-            margin-bottom: 20px;
         }
         
         .profile-image {
@@ -39,8 +47,12 @@
         }
         
         @media (max-width: 768px) {
-            .welcome-heading {
-                font-size: 1.3rem;
+            .welcome-text {
+                font-size: 1.2rem;
+            }
+            
+            .typing-container {
+                min-height: 40px;
             }
             
             .profile-image {
@@ -63,8 +75,10 @@
     <div class="container">
         <div class="home-content">
             <div class="profile-container">
-                <!-- Teks welcome statis yang benar -->
-                <h1 class="welcome-heading">Welcome to Jennifer Manoppo's Personal Blog</h1>
+                <!-- Container khusus untuk animasi typing -->
+                <div class="typing-container">
+                    <h1 id="typing-text" class="welcome-text"></h1>
+                </div>
                 
                 <p class="university-info">Universitas Sam Ratulangi, Fakultas Teknik, Jurusan Elektro, Program Studi Teknik Informatika.</p>
                 
@@ -81,8 +95,93 @@
         <p>&copy; <b>2025 Jennifer Manoppo</b></p>
     </footer>
     
+    <!-- Script dengan perbaikan untuk masalah teks -->
     <script>
+        // Pastikan ini berjalan sebelum apapun
+        (function() {
+            // Hapus cache yang mungkin menyimpan versi salah
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                // Hapus semua cookie terkait
+                document.cookie.split(";").forEach(function(c) {
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+            } catch(e) {
+                console.log("Error clearing cache:", e);
+            }
+        })();
+        
         document.addEventListener('DOMContentLoaded', function() {
+            // Text yang akan ditampilkan (teks yang benar)
+            const CORRECT_TEXT = "Welcome to Jennifer Manoppo's Personal Blog";
+            const typingElement = document.getElementById('typing-text');
+            
+            // Clear any existing content first
+            if (typingElement) {
+                typingElement.textContent = "";
+            }
+            
+            // Set ukuran font berbeda berdasarkan perangkat
+            const isMobile = window.innerWidth <= 768;
+            
+            // Variabel untuk animasi
+            let i = 0;
+            let speed = isMobile ? 40 : 50; // Lebih cepat di mobile
+            
+            // Fungsi animasi typing yang aman
+            function safeTypeWriter() {
+                if (!typingElement) return;
+                
+                if (i < CORRECT_TEXT.length) {
+                    typingElement.textContent += CORRECT_TEXT.charAt(i);
+                    i++;
+                    setTimeout(safeTypeWriter, speed);
+                }
+            }
+            
+            // Delay sebelum memulai animasi
+            setTimeout(function() {
+                if (typingElement) {
+                    typingElement.textContent = ""; // Pastikan kosong sebelum mulai
+                    safeTypeWriter();
+                }
+            }, 500);
+            
+            // Jika ada masalah, tampilkan teks lengkap sebagai fallback
+            setTimeout(function() {
+                if (typingElement) {
+                    const currentText = typingElement.textContent || "";
+                    if (currentText.length < CORRECT_TEXT.length || 
+                        currentText.includes("Blogg") || 
+                        currentText.includes("Blogog")) {
+                        console.log("Fallback: fixing text issue");
+                        typingElement.textContent = CORRECT_TEXT;
+                    }
+                }
+            }, CORRECT_TEXT.length * speed + 1500);
+            
+            // Fungsi untuk memperbaiki teks yang salah (dijalankan beberapa kali)
+            function fixTextIfNeeded() {
+                if (typingElement) {
+                    const currentText = typingElement.textContent || "";
+                    if (currentText.includes("Blogg") || currentText.includes("Blogog")) {
+                        console.log("Fixing incorrect text:", currentText);
+                        typingElement.textContent = CORRECT_TEXT;
+                        return true;
+                    }
+                }
+                return false;
+            }
+            
+            // Jadwalkan beberapa pemeriksaan selama 10 detik pertama
+            setTimeout(fixTextIfNeeded, 2000);
+            setTimeout(fixTextIfNeeded, 4000);
+            setTimeout(fixTextIfNeeded, 6000);
+            setTimeout(fixTextIfNeeded, 8000);
+            setTimeout(fixTextIfNeeded, 10000);
+            
             // Set active link
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
             document.querySelectorAll('.nav-links a').forEach(link => {
@@ -90,19 +189,6 @@
                     link.classList.add('active');
                 }
             });
-            
-            // Memastikan welcome text benar dengan scripting
-            const welcomeHeading = document.querySelector('.welcome-heading');
-            if (welcomeHeading) {
-                // Pastikan teks selalu benar
-                const correctText = "Welcome to Jennifer Manoppo's Personal Blog";
-                const currentText = welcomeHeading.textContent;
-                
-                if (currentText.includes("Blogg") || currentText.includes("Blogog")) {
-                    console.log("Memperbaiki teks yang salah:", currentText);
-                    welcomeHeading.textContent = correctText;
-                }
-            }
         });
     </script>
 </body>
