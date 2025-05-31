@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Homepage</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Style tambahan untuk animasi yang aman */
+        .typing-container {
+            min-height: 60px;
+            margin-bottom: 20px;
+            position: relative;
+            text-align: center;
+        }
+        
+        .welcome-text {
+            display: inline-block;
+            margin: 0;
+            font-size: 2rem;
+            color: #333;
+            text-align: center;
+        }
+        
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: block;
+            border: 3px solid #fff;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .intro-text {
+            margin: 15px 0;
+            text-align: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .profile-container {
+            text-align: center;
+            padding: 0 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .welcome-text {
+                font-size: 1.2rem;
+            }
+            
+            .typing-container {
+                min-height: 40px;
+            }
+            
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="blog.php">Blog</a>
+            <a href="contact.php">Contact</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="home-content">
+            <div class="profile-container">
+                <!-- Container khusus untuk animasi typing -->
+                <div class="typing-container">
+                    <h1 id="typing-text" class="welcome-text"></h1>
+                </div>
+                
+                <p class="university-info">Universitas Sam Ratulangi, Fakultas Teknik, Jurusan Elektro, Program Studi Teknik Informatika.</p>
+                
+                <img src="img/photo11.jpg" alt="Profile Photo" class="profile-image" loading="lazy">
+                
+                <p class="intro-text">Apabila mner berkenan tolong berikan saya nilai A, Terimaksih banyak Tuhan Memberkati.</p>
+                
+                <a href="contact.html" class="cta-button">Hubungi Saya</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; <b>2025 Jennifer Manoppo</b></p>
+    </footer>
+    
+    <!-- Script dengan perbaikan untuk masalah teks -->
+    <script>
+        // Pastikan ini berjalan sebelum apapun
+        (function() {
+            // Hapus cache yang mungkin menyimpan versi salah
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                // Hapus semua cookie terkait
+                document.cookie.split(";").forEach(function(c) {
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+            } catch(e) {
+                console.log("Error clearing cache:", e);
+            }
+        })();
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Text yang akan ditampilkan (teks yang benar)
+            const CORRECT_TEXT = "Welcome to Jennifer Manoppo's Personal Blog";
+            const typingElement = document.getElementById('typing-text');
+            
+            // Clear any existing content first
+            if (typingElement) {
+                typingElement.textContent = "";
+            }
+            
+            // Set ukuran font berbeda berdasarkan perangkat
+            const isMobile = window.innerWidth <= 768;
+            
+            // Variabel untuk animasi
+            let i = 0;
+            let speed = isMobile ? 40 : 50; // Lebih cepat di mobile
+            
+            // Fungsi animasi typing yang aman
+            function safeTypeWriter() {
+                if (!typingElement) return;
+                
+                if (i < CORRECT_TEXT.length) {
+                    typingElement.textContent += CORRECT_TEXT.charAt(i);
+                    i++;
+                    setTimeout(safeTypeWriter, speed);
+                }
+            }
+            
+            // Delay sebelum memulai animasi
+            setTimeout(function() {
+                if (typingElement) {
+                    typingElement.textContent = ""; // Pastikan kosong sebelum mulai
+                    safeTypeWriter();
+                }
+            }, 500);
+            
+            // Jika ada masalah, tampilkan teks lengkap sebagai fallback
+            setTimeout(function() {
+                if (typingElement) {
+                    const currentText = typingElement.textContent || "";
+                    if (currentText.length < CORRECT_TEXT.length || 
+                        currentText.includes("Blogg") || 
+                        currentText.includes("Blogog")) {
+                        console.log("Fallback: fixing text issue");
+                        typingElement.textContent = CORRECT_TEXT;
+                    }
+                }
+            }, CORRECT_TEXT.length * speed + 1500);
+            
+            // Fungsi untuk memperbaiki teks yang salah (dijalankan beberapa kali)
+            function fixTextIfNeeded() {
+                if (typingElement) {
+                    const currentText = typingElement.textContent || "";
+                    if (currentText.includes("Blogg") || currentText.includes("Blogog")) {
+                        console.log("Fixing incorrect text:", currentText);
+                        typingElement.textContent = CORRECT_TEXT;
+                        return true;
+                    }
+                }
+                return false;
+            }
+            
+            // Jadwalkan beberapa pemeriksaan selama 10 detik pertama
+            setTimeout(fixTextIfNeeded, 2000);
+            setTimeout(fixTextIfNeeded, 4000);
+            setTimeout(fixTextIfNeeded, 6000);
+            setTimeout(fixTextIfNeeded, 8000);
+            setTimeout(fixTextIfNeeded, 10000);
+            
+            // Set active link
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
