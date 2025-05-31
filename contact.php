@@ -1,13 +1,45 @@
+<?php
+include 'db.php';
+
+$successMessage = '';
+$errorMessage = '';
+
+// Cek jika form disubmit
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Ambil data dari form dan bersihkan input (simple sanitasi)
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $subject = trim($_POST['subject'] ?? '');
+    $message = trim($_POST['message'] ?? '');
+
+    // Validasi sederhana
+    if ($name === '' || $email === '' || $subject === '' || $message === '') {
+        $errorMessage = "Semua field wajib diisi.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errorMessage = "Email tidak valid.";
+    } else {
+        // Siapkan statement untuk insert ke DB (prepared statement untuk keamanan)
+        $stmt = $conn->prepare("INSERT INTO contacts (name, email, subject, message) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $name, $email, $subject, $message);
+        if ($stmt->execute()) {
+            $successMessage = "Terima kasih, $name! Pesan Anda telah diterima.";
+            // Reset form data agar kosong setelah submit sukses
+            $name = $email = $subject = $message = '';
+        } else {
+            $errorMessage = "Terjadi kesalahan saat menyimpan pesan, coba lagi.";
+        }
+        $stmt->close();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#333333">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Contact - My Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <style>
         /* Style tambahan khusus untuk halaman kontak */
         .contact-container {
@@ -77,6 +109,24 @@
         .submit-btn:hover {
             background-color: #555;
         }
+
+        .success-message {
+            padding: 10px 15px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .error-message {
+            padding: 10px 15px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -84,14 +134,14 @@
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="gallery.html">Gallery</a>
-            <a href="blog.html">Blog</a>
-            <a href="contact.html">Contact</a>
+            <a href="blog.php">Blog</a>
+            <a href="contact.php" class="active">Contact</a>
         </div>
     </nav>
 
     <div class="container">
         <h1>Contact Me</h1>
-        
+
         <div class="contact-container">
             <div class="contact-info">
                 <div class="contact-item">
@@ -101,7 +151,6 @@
                         <span>+62 812-3456-7890</span>
                     </div>
                 </div>
-                
                 <div class="contact-item">
                     <i>📷</i>
                     <div>
@@ -109,7 +158,6 @@
                         <a href="https://instagram.com/yourusername" target="_blank">@jennajahya_</a>
                     </div>
                 </div>
-                
                 <div class="contact-item">
                     <i>✉️</i>
                     <div>
@@ -118,30 +166,34 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="contact-form">
                 <h2>Kirim Pesan</h2>
-                <form id="contact-form">
+
+                <?php if ($successMessage): ?>
+                    <div class="success-message"><?= htmlspecialchars($successMessage) ?></div>
+                <?php endif; ?>
+                <?php if ($errorMessage): ?>
+                    <div class="error-message"><?= htmlspecialchars($errorMessage) ?></div>
+                <?php endif; ?>
+
+                <form method="POST" action="contact.php" id="contact-form">
                     <div class="form-group">
                         <label for="name">Nama</label>
-                        <input type="text" id="name" class="form-control" required>
+                        <input type="text" id="name" name="name" class="form-control" required value="<?= htmlspecialchars($name ?? '') ?>" />
                     </div>
-                    
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" class="form-control" required>
+                        <input type="email" id="email" name="email" class="form-control" required value="<?= htmlspecialchars($email ?? '') ?>" />
                     </div>
-                    
                     <div class="form-group">
                         <label for="subject">Subjek</label>
-                        <input type="text" id="subject" class="form-control" required>
+                        <input type="text" id="subject" name="subject" class="form-control" required value="<?= htmlspecialchars($subject ?? '') ?>" />
                     </div>
-                    
                     <div class="form-group">
                         <label for="message">Pesan</label>
-                        <textarea id="message" class="form-control" required></textarea>
+                        <textarea id="message" name="message" class="form-control" required><?= htmlspecialchars($message ?? '') ?></textarea>
                     </div>
-                    
                     <button type="submit" class="submit-btn">Kirim Pesan</button>
                 </form>
             </div>
@@ -151,32 +203,5 @@
     <footer class="footer">
         <p>&copy; <b>2025 Jennifer Manoppo</b></p>
     </footer>
-
-    <script>
-        // Script khusus untuk halaman kontak
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tandai menu aktif
-            const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => {
-                if (link.textContent === 'Contact') {
-                    link.classList.add('active');
-                }
-            });
-            
-            // Form submission
-            const form = document.getElementById('contact-form');
-            if (form) {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const name = document.getElementById('name').value;
-                    alert(`Terima kasih ${name}! Pesan Anda telah diterima.`);
-                    this.reset();
-                });
-            }
-        });
-    </script>
-    
-    <!-- Nonaktifkan sementara script.js yang menyebabkan duplikasi -->
-    <!-- <script src="scripts.js"></script> -->
 </body>
 </html>
